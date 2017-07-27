@@ -18,50 +18,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MyFirstServlet extends HttpServlet {
-	private String driverClass = "com.mysql.jdbc.Driver";
-	private String url = "jdbc:mysql://127.0.0.1:3306/student?useUnicode=true&characterEncoding=GBK";
-	private String user = "root";
-	private String passWord = "qwer123456";
+
 	private Connection conn;
 
 	public void init() {
-		try {
-			Class.forName(driverClass);
-			conn = DriverManager.getConnection(url, user, passWord);
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		conn = MySql.getConnection();
 	}
 
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-	        throws ServletException, IOException{
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.setContentType("text/json");
-		resp.setCharacterEncoding("utf-8"); 
-		PrintWriter out=resp.getWriter();
-		try {
-			Statement statement=conn.createStatement();
-			String sql="select * from class";
-			ResultSet result=statement.executeQuery(sql);
-			JSONArray jArray = new JSONArray();
-			while(result.next()) {
-				JSONObject jObject = new JSONObject();
-				jObject.put("classNum",result.getString("classNum"));
-				jObject.put("Name",result.getString("Name"));
-				jArray.put(jObject);
-			}
-			result.close();
-			statement.close();
-			out.print(jArray);
-			out.flush();
-			out.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}catch(JSONException e) {
-		}
+		resp.setCharacterEncoding("utf-8");
+		PrintWriter out = resp.getWriter();
+		StudentController student=new StudentController();
+		out.print(student.Index());
+		out.flush();
+		out.close();
+
 	}
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
