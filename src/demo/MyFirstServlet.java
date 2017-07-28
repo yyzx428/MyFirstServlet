@@ -20,20 +20,21 @@ import org.json.JSONObject;
 public class MyFirstServlet extends HttpServlet {
 
 	private Connection conn;
-
+	public static ActionConfig ActionConfig;
 	public void init() {
 		conn = MySql.getConnection();
+		ActionConfig=new ActionConfig();
 	}
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.setContentType("text/json");
 		resp.setCharacterEncoding("utf-8");
+		String urls=req.getRequestURI();
 		PrintWriter out = resp.getWriter();
-		StudentController student=new StudentController();
+		StudentController student = new StudentController();
 		out.print(student.Index());
 		out.flush();
 		out.close();
-
 	}
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -41,11 +42,13 @@ public class MyFirstServlet extends HttpServlet {
 	}
 
 	public void destroy() {
-		try {
-			conn.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (conn != null) {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 }
