@@ -11,7 +11,7 @@
 	  
 	  <servlet-mapping>
 		<servlet-name>122</servlet-name>
-		<url-pattern>/MyFirstServlet</url-pattern>
+		<url-pattern>/Student/*</url-pattern>
 	  </servlet-mapping>
 	  
 	  <filter>
